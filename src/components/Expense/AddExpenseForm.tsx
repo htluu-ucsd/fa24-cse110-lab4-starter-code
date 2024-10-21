@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";
+import {v4 as uuidv4} from "uuid";
+
 const AddExpenseForm = () => {
   // Exercise: Consume the AppContext here
-  const appCon = useContext(AppContext);
+  const {expenses, setExpenses} = useContext(AppContext);
 
   // Exercise: Create name and cost to state variables
   const [name, setName] = useState("");
@@ -12,8 +14,15 @@ const AddExpenseForm = () => {
     event.preventDefault();
 
     // Exercise: Add add new expense to expenses context array
-    const currentExpense = {id: name, name: name, cost: cost};
-    appCon.setExpenses(prev => [...prev, currentExpense]);
+    const currentExpense = {
+      id: uuidv4(), 
+      name: name, 
+      cost: cost
+    };
+    
+
+    // appCon.setExpenses(prev => [...prev, currentExpense]);
+    setExpenses([...expenses, currentExpense]);
   };
 
   return (
