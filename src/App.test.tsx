@@ -215,6 +215,42 @@ describe("My Budget Tracker", () => {
       expect(finalSpent).toBeInTheDocument();
       
     })
+
+    //test add delete add
+    test("budget balance verification add delete add", () =>{
+      render(<App />);
+      const nameInput = screen.getByTestId("name-input");
+      const costInput = screen.getByTestId("cost-input");
+      const saveButton = screen.getByTestId("save-button");
+      
+      fireEvent.change(nameInput, { target: { value: "Papaya"} })
+      fireEvent.change(costInput, { target: { value: "20000"} })
+      fireEvent.click(saveButton);
+
+      const delButton = screen.getAllByText("x");
+
+      const newBalance = screen.getByText("Remaining: $-19000");
+      const newSpent = screen.getByText("Spent so far: $20000");
+
+      expect(newBalance).toBeInTheDocument();
+      expect(newSpent).toBeInTheDocument();
+
+      fireEvent.click(delButton[0]);
+
+      //readd same item
+      const saveButton2 = screen.getByTestId("save-button");
+      
+      fireEvent.change(nameInput, { target: { value: "Papaya 2"} })
+      fireEvent.change(costInput, { target: { value: "2000"} })
+      fireEvent.click(saveButton2);
+
+      const newBalance2 = screen.getByText("Remaining: $-1000");
+      const newSpent2 = screen.getByText("Spent so far: $2000");
+
+      expect(newBalance2).toBeInTheDocument();
+      expect(newSpent2).toBeInTheDocument();
+      
+    })
   }
 ); 
 
