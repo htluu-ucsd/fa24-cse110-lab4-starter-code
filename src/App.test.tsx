@@ -6,6 +6,8 @@ describe("My Budget Tracker", () => {
 
   test("expense creation positive", () =>{
     render(<App />);
+
+    // Get input 
     const nameInput = screen.getByTestId("name-input");
     const costInput = screen.getByTestId("cost-input");
     const saveButton = screen.getByTestId("save-button");
@@ -14,10 +16,12 @@ describe("My Budget Tracker", () => {
     const budget = screen.getByText("Budget: $1000")
     const spent = screen.getByText("Spent so far: $0")
 
+    // Check text
     expect(oldBalance).toBeInTheDocument();
     expect(budget).toBeInTheDocument();
     expect(spent).toBeInTheDocument();
 
+    // Add expense
     fireEvent.change(nameInput, { target: { value: "Groceries"} })
     fireEvent.change(costInput, { target: { value: "50"} })
     fireEvent.click(saveButton);
@@ -25,12 +29,14 @@ describe("My Budget Tracker", () => {
     const nameText = screen.getByText("Groceries");
     const costText = screen.getByText("$50");
 
+    // Check expense
     expect(nameText).toBeInTheDocument();
     expect(costText).toBeInTheDocument();
 
     const newBalance = screen.getByText("Remaining: $950");
     const newSpent = screen.getByText("Spent so far: $50");
 
+    // Check balance
     expect(newBalance).toBeInTheDocument();
     expect(newSpent).toBeInTheDocument();
 
