@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import {v4 as uuidv4} from "uuid";
+import { createExpense } from "../../utils/expense-utils"
 
 const AddExpenseForm = () => {
   // Exercise: Consume the AppContext here
@@ -16,13 +17,15 @@ const AddExpenseForm = () => {
     // Exercise: Add add new expense to expenses context array
     const currentExpense = {
       id: uuidv4(), 
-      name: name, 
+      description: name, 
       cost: cost
     };
     
+    createExpense(currentExpense);
 
     // appCon.setExpenses(prev => [...prev, currentExpense]);
     setExpenses([...expenses, currentExpense]);
+
   };
 
   return (
@@ -67,5 +70,6 @@ const AddExpenseForm = () => {
     </form>
   );
 };
+
 
 export default AddExpenseForm;
