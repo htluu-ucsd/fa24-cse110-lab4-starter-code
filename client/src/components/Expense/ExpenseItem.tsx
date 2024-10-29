@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Expense } from "../../types/types";
 import { AppContext } from "../../context/AppContext";
 import { deleteExpense } from "../../utils/expense-utils";
+import exp from "constants";
 
 const ExpenseItem = (currentExpense: Expense) => {
   // Exercise: Consume the AppContext here
@@ -9,10 +10,11 @@ const ExpenseItem = (currentExpense: Expense) => {
 
   const handleDeleteExpense = (currentExpense: Expense) => {
     // Exercise: Remove expense from expenses context array
-
-    deleteExpense(currentExpense.id)
+    deleteExpense(currentExpense.id); //POTENIALLY PART OF BUG, DELETES LAST ITEM INSTEAD OF BY ID
+    // console.log(currentExpense.description);
 
     setExpenses(prev => prev.filter(expense => expense.id !== currentExpense.id));
+
   };
 
   return (
