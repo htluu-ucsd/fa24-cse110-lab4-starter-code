@@ -1,21 +1,15 @@
 import { useContext, useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
-import { fetchBudget } from "../../utils/budget-utils";
+import { fetchBudget, updateBudget } from "../../utils/budget-utils";
 
 const Budget = () => {
   const {budget, setBudget} = useContext(AppContext);
-
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setBudget(event.currentTarget.value)
-  
-  };
 
   useEffect(() => {
     loadBudget();
     }, []);
   
-    // Function to load expenses and handle errors
+    // Function to load budget and handle errors
     const loadBudget = async () => {
     try {
       const budgetNum = await fetchBudget();
@@ -28,8 +22,7 @@ const Budget = () => {
   return (
     <div className="alert alert-secondary p-3 d-flex align-items-center justify-content-between">
       <div>
-      <form onSubmit={(event) => onSubmit(event)}>
-      <label>Budget: </label>
+      <label>Budget: ${budget}</label>
           <input
             required
             type="text"
@@ -39,10 +32,10 @@ const Budget = () => {
             data-testid={"budget-input"}
             // HINT: onChange={}
             onChange={(event) => {
+              updateBudget(parseInt(event.target.value))
               setBudget(parseInt(event.target.value))
             }}
           ></input>
-          </form>
           </div>
     </div>
   );
