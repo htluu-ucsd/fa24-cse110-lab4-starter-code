@@ -254,7 +254,7 @@ describe("My Budget Tracker", () => {
       const newSpent2 = screen.getByText("Spent so far: $2000");
 
       expect(newBalance2).toBeInTheDocument();
-      expect(newSpent2).not.toBeInTheDocument();
+      expect(newSpent2).toBeInTheDocument();
       
     })
   }
