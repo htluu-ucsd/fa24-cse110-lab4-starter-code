@@ -30,19 +30,21 @@ export async function deleteExpense(req: Request, res: Response, db: Database) {
     }
 
     try {
-        const exists = await db.get('SELECT EXISTS(SELECT 1 FROM expenses WHERE id = (?));', [id]);
-        if (exists === 1){
-            await db.run('DELETE FROM expenses WHERE id = (?);', [id]);
+        const exists = await db.get('SELECT id FROM expenses WHERE id = ?;', [id]);
+        if (exists !== ''){
+            await db.run('DELETE FROM expenses WHERE id = ?;', [id]);
         } else {
             return res.status(404).send({error: "no such item"});
         }
     } catch (error) {
-        return res.status(404).send({error: "no such item"});
+        return res.status(404).send({error: "failed to delete"});
     }
 
     res.status(204).send();
 }
 
-export function getExpenses(req: Request, res: Response, expenses: Expense[]) {
+export async function getExpenses(req: Request, res: Response, db: Database) {
+    const expenses = await db.all('SELECT * FROM expenses');
+
     res.status(200).send({ "data": expenses });
 }
