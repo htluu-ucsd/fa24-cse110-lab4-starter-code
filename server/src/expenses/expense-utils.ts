@@ -21,7 +21,7 @@ export async function createExpenseServer(req: Request, res: Response, db: Datab
  }
  
 
-export function deleteExpense(req: Request, res: Response, expenses: Expense[]) {
+export async function deleteExpense(req: Request, res: Response, db: Database) {
     // TO DO: Implement deleteExpense function
     const { id } = req.params;
 
@@ -29,13 +29,16 @@ export function deleteExpense(req: Request, res: Response, expenses: Expense[]) 
         return res.status(404).send({ error: "Missing required fields" });
     }
 
-    const index = expenses.findIndex((expense) => expense.id === id);
-
-    if (index === -1){
+    try {
+        const exists = await db.get('SELECT EXISTS(SELECT 1 FROM expenses WHERE id = (?));', [id]);
+        if (exists === 1){
+            await db.run('DELETE FROM expenses WHERE id = (?);', [id]);
+        } else {
+            return res.status(404).send({error: "no such item"});
+        }
+    } catch (error) {
         return res.status(404).send({error: "no such item"});
     }
-
-    expenses.splice(index, 1);
 
     res.status(204).send();
 }
