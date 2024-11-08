@@ -3,7 +3,8 @@ import { Expense } from "../types";
 import { Request, Response } from "express";
 
 export async function createExpenseServer(req: Request, res: Response, db: Database) {
-    const { id, cost, description } = req.body;
+    const { id, cost, description } = req.body as { id: string, cost: number, description: string };
+
  
     if (!description || !id || !cost) {
         return res.status(400).send({ error: "Missing required fields" });
@@ -23,7 +24,7 @@ export async function createExpenseServer(req: Request, res: Response, db: Datab
 
 export async function deleteExpense(req: Request, res: Response, db: Database) {
     // TO DO: Implement deleteExpense function
-    const { id } = req.params;
+    const { id } = req.params as { id: string };
 
     if ( !id ) {
         return res.status(404).send({ error: "Missing required fields" });
